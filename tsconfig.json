@@ -1,23 +1,29 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "es6",
     "module": "ESNext",
-    "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
-    "sourceMap": false,
-    "outDir": "lib",
-    "rootDir": "src",
-    "strict": true,
-    "types": ["node", "jest"],
-    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["dom", "es2015", "es2016", "ES2017"],
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "removeComments": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "types": ["node", "jest"],
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "removeComments": true
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": false
   },
-  "exclude": ["node_modules", "test"]
+  "exclude": ["node_modules", "lib", "test"],
+  "include": ["src"]
 }

@@ -1,16 +1,27 @@
 {
-  "name": "async-hook",
+  "name": "deasyncify",
   "version": "0.0.1",
-  "main": "lib/async-hook",
-  "repository": "https://github.com/Xavier577/async-hook.git",
+  "description": "A powerful library to handle asynchronous programming in javascript",
+  "main": "lib/deasyncify",
+  "repository": "https://github.com/Xavier577/deasyncify.git",
   "author": "joseph <josephtsegen10@gmail.com>",
   "license": "MIT",
   "files": [
     "lib"
   ],
+  "keywords": [
+    "deasyncify",
+    "AsyncHook",
+    "javascript",
+    "typescript",
+    "asynchronous programming"
+  ],
+  "bugs": {
+    "url": "https://github.com/Xavier577/deasyncify/issues"
+  },
+  "homepage": "https://github.com/Xavier577/deasyncify#readme",
   "scripts": {
     "build": "tsc",
-    "publish": "tsc && npm publish",
     "test": "jest"
   },
   "devDependencies": {
