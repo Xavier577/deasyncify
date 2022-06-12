@@ -1,8 +1,9 @@
 {
   "name": "deasyncify",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A powerful library to handle asynchronous programming in javascript",
-  "main": "lib/deasyncify",
+  "main": "lib/index",
+  "types": "lib/index.d.ts",
   "repository": "https://github.com/Xavier577/deasyncify.git",
   "author": "joseph <josephtsegen10@gmail.com>",
   "license": "MIT",

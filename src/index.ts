@@ -17,9 +17,13 @@ export default class Deasyncify {
     }
   };
 
-  public static watchAll = async <J, T extends Awaited<J>>(
+  public static watchAll = async <
+    J,
+    T extends Awaited<J>,
+    G = T extends () => any ? Awaited<ReturnType<T>> : T
+  >(
     asyncArr: J[]
-  ): Promise<[T[] | null, any]> => {
+  ): Promise<[G[] | null, any]> => {
     try {
       const toBeResolvedPromises = asyncArr.map((asyncObj, idx) => {
         if (asyncObj instanceof Function) return asyncObj();
@@ -29,16 +33,20 @@ export default class Deasyncify {
             `AsyncHook Error: asyncArr contains an element which is neither a promise or an async function at index ${idx} `
           );
       });
-      const result = await Promise.all<T[]>(toBeResolvedPromises);
+      const result = await Promise.all<G[]>(toBeResolvedPromises);
       return [result, null];
     } catch (err: any) {
       return [null, err];
     }
   };
 
-  public static watchSettled = async <J, T extends Awaited<J>>(
+  public static watchSettled = async <
+    J,
+    T extends Awaited<J>,
+    G = T extends () => any ? Awaited<ReturnType<T>> : T
+  >(
     asyncArr: J[]
-  ): Promise<[T[], any[]]> => {
+  ): Promise<[G[], any[]]> => {
     const promisesToBeSettled = asyncArr.map((asyncObj, idx) => {
       if (asyncObj instanceof Function) return asyncObj();
       else if (asyncObj instanceof Promise) return asyncObj;
@@ -47,9 +55,9 @@ export default class Deasyncify {
           `AsyncHook Error: asyncArr contains an element which is neither a promise or an async function at index ${idx} `
         );
     });
-    let result = await Promise.allSettled<T[]>(promisesToBeSettled);
+    let result = await Promise.allSettled<G[]>(promisesToBeSettled);
 
-    const allResolved: T[] = [];
+    const allResolved: G[] = [];
 
     const allRejected: any[] = [];
 
