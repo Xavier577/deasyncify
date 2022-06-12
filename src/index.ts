@@ -1,16 +1,20 @@
+import DeasyncifyError from "./errors/DeasyncifyError";
+import DeasyncifyErrorMsgs from "./errors/DeasyncifyErrorMessages";
 export default class Deasyncify {
   public static watch = async <T>(
-    asyncObj: Promise<T> | (() => Promise<T>)
+    asyncParam: Promise<T> | (() => Promise<T>)
   ): Promise<[T | null, any]> => {
     try {
-      let result: T;
-      if (asyncObj instanceof Function) result = await asyncObj();
-      else if (asyncObj instanceof Promise) result = await asyncObj;
+      if (asyncParam == null)
+        throw new DeasyncifyError(DeasyncifyErrorMsgs.watch.EMPTY_ARGUMENT);
+      let expectedValue: T;
+      if (asyncParam instanceof Function) expectedValue = await asyncParam();
+      else if (asyncParam instanceof Promise) expectedValue = await asyncParam;
       else
-        throw new Error(
-          "AsyncHook error: params is neither a promise or an async function"
+        throw new DeasyncifyError(
+          DeasyncifyErrorMsgs.watch.INVALID_TYPE(typeof asyncParam)
         );
-      return [result, null];
+      return [expectedValue, null];
     } catch (err) {
       let error = err;
       return [null, error];
@@ -24,17 +28,41 @@ export default class Deasyncify {
   >(
     asyncArr: J[]
   ): Promise<[G[] | null, any]> => {
+    /* 
+  Errors are handled because of javascript users and would not have been implemented if it wasn't for them :(  
+    Just to be safe.
+    */
     try {
-      const toBeResolvedPromises = asyncArr.map((asyncObj, idx) => {
-        if (asyncObj instanceof Function) return asyncObj();
-        else if (asyncObj instanceof Promise) return asyncObj;
-        else
-          throw new Error(
-            `AsyncHook Error: asyncArr contains an element which is neither a promise or an async function at index ${idx} `
+      switch (true) {
+        case asyncArr == null:
+          throw new DeasyncifyError(
+            DeasyncifyErrorMsgs.watchMany.EMPTY_ARGUMENT
           );
-      });
-      const result = await Promise.all<G[]>(toBeResolvedPromises);
-      return [result, null];
+
+        case Array.isArray(asyncArr) === false:
+          throw new DeasyncifyError(
+            DeasyncifyErrorMsgs.watchMany.INVALID_TYPE(typeof asyncArr)
+          );
+
+        default:
+          const toBeResolvedPromises = asyncArr.map((asyncParam, idx) => {
+            switch (true) {
+              case asyncParam instanceof Function:
+                return (asyncParam as unknown as Function)();
+              case asyncParam instanceof Promise:
+                return asyncParam;
+              default:
+                throw new DeasyncifyError(
+                  DeasyncifyErrorMsgs.watchMany.INVALID_ASYNC_ELEMENT(
+                    typeof asyncParam,
+                    idx
+                  )
+                );
+            }
+          });
+          const expectedValues = await Promise.all<G[]>(toBeResolvedPromises);
+          return [expectedValues, null];
+      }
     } catch (err: any) {
       return [null, err];
     }
@@ -47,25 +75,46 @@ export default class Deasyncify {
   >(
     asyncArr: J[]
   ): Promise<[G[], any[]]> => {
-    const promisesToBeSettled = asyncArr.map((asyncObj, idx) => {
-      if (asyncObj instanceof Function) return asyncObj();
-      else if (asyncObj instanceof Promise) return asyncObj;
-      else
-        throw new Error(
-          `AsyncHook Error: asyncArr contains an element which is neither a promise or an async function at index ${idx} `
+    switch (true) {
+      case asyncArr == null:
+        throw new DeasyncifyError(DeasyncifyErrorMsgs.watchMany.EMPTY_ARGUMENT);
+
+      case Array.isArray(asyncArr) === false:
+        throw new DeasyncifyError(
+          DeasyncifyErrorMsgs.watchMany.INVALID_TYPE(typeof asyncArr)
         );
-    });
-    let result = await Promise.allSettled<G[]>(promisesToBeSettled);
 
-    const allResolved: G[] = [];
+      default:
+        const promisesToBeSettled = asyncArr.map((asyncParam, idx) => {
+          switch (true) {
+            case asyncParam instanceof Function:
+              return (asyncParam as unknown as Function)();
+            case asyncParam instanceof Promise:
+              return asyncParam;
+            default:
+              throw new DeasyncifyError(
+                DeasyncifyErrorMsgs.watchMany.INVALID_ASYNC_ELEMENT(
+                  typeof asyncParam,
+                  idx
+                )
+              );
+          }
+        });
+        let result = await Promise.allSettled(promisesToBeSettled);
 
-    const allRejected: any[] = [];
+        const allResolved: G[] = [];
 
-    result.forEach((promise) => {
-      if (promise.status === "fulfilled") allResolved.push(promise.value);
-      else if (promise.status === "rejected") allRejected.push(promise.reason);
-    });
+        const allRejected: any[] = [];
 
-    return [allResolved, allRejected];
+        result.forEach((promise) => {
+          if (promise.status === "fulfilled") allResolved.push(promise.value);
+          else if (promise.status === "rejected")
+            allRejected.push(promise.reason);
+        });
+
+        return [allResolved, allRejected];
+    }
   };
 }
+
+export { default as DeasyncifyError } from "./errors/DeasyncifyError";

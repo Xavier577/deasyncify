@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "ESNext",
+    "target": "es2017",
+    "module": "CommonJS",
     "jsx": "react",
-    "lib": ["dom", "es2015", "es2016", "ES2017"],
+    "lib": ["dom", "ES5", "es2015", "es2016", "ES2017", "ES2020"],
     "moduleResolution": "node",
     "declaration": true,
     "sourceMap": true,

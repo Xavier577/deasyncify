@@ -1,6 +1,6 @@
 {
   "name": "deasyncify",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A powerful library to handle asynchronous programming in javascript",
   "main": "lib/index",
   "types": "lib/index.d.ts",
