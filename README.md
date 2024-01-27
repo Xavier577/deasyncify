@@ -15,8 +15,8 @@ A declarative way of doing asynchronous programing with Typescript.
 
 # Getting started
 
-Deasyncify is a utility library which builds on top of Typescript's Promise api and simplifies handling promises and async functions. The goal of this library is to help make handling asychronous Typescript code more declarative withoud having to wrap code in a try-catch blockcode (which
-makes your code more cleaner) and without losing type definition on the return types of the values of resolved promises or async function trying to write a custom wrapper for yourself (yes we implemented that too). Imagine writing your own custom async wrapper for every single new project (that's pretty much a drag).
+Deasyncify is a utility library which builds on top of Typescript's Promise api and simplifies handling promises and async functions. The goal of this library is to help make handling asychronous Typescript code more declarative without having to wrap code in a try-catch blockcode to handle errors(which
+makes your code more cleaner because errors are handled as values) and without losing type definition on the return types of the values of resolved promises or async function trying to write a custom wrapper for yourself (yes we implemented that too). Imagine writing your own custom async wrapper for every single new project (that's pretty much a drag).
 
 ```
 import axios from 'axios';
