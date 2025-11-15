@@ -18,7 +18,7 @@ A declarative way of doing asynchronous programing with Typescript.
 Deasyncify is a utility library which builds on top of Typescript's Promise api and simplifies handling promises and async functions. The goal of this library is to help make handling asychronous Typescript code more declarative without having to wrap code in a try-catch blockcode to handle errors(which
 makes your code more cleaner because errors are handled as values) and without losing type definition on the return types of the values of resolved promises or async function trying to write a custom wrapper for yourself (yes we implemented that too). Imagine writing your own custom async wrapper for every single new project (that's pretty much a drag).
 
-```
+```typescript
 import axios from 'axios';
 import Deasyncify from 'deasyncify';
 
@@ -39,13 +39,13 @@ This library is meant to work on all nodejs enviroments. If any issue or bug is 
 
 ### Using yarn
 
-```
+```bash
 $ yarn add deasyncify
 ```
 
 ### Using npm
 
-```
+```bash
 $ npm install deasyncify
 ```
 
@@ -74,7 +74,7 @@ Deasyncify.`watch` is used to handle a single asynchorous function or promise.
 
 > Example
 
-```
+```typescript
 import { Request, Response, Next } from "express";
 import prisma from "prisma";
 import Deasyncify from "deasyncify";
@@ -96,7 +96,7 @@ Deasyncify.`watchAll` is used to handle a bunch of asynchorous function or promi
 
 > Definitions
 
-- ```
+- ```typescript
    watchAll = <
     J,
     T extends Awaited<J>,
@@ -116,7 +116,7 @@ Deasyncify.`watchAll` is used to handle a bunch of asynchorous function or promi
 
 > Example
 
-```
+```typescript
 import { Request, Response, Next } from "express";
 import prisma from "prisma";
 import Deasyncify from "deasyncify";
@@ -140,7 +140,7 @@ Deasyncify.`watchSettled` is used to also handle a bunch of asynchorous function
 
 > Definitions
 
-- ```
+- ```typescript
    watchSettled = <
     J,
     T extends Awaited<J>,
@@ -160,7 +160,7 @@ Deasyncify.`watchSettled` is used to also handle a bunch of asynchorous function
 
 > Example
 
-```
+```typescript
 import { Request, Response, Next } from "express";
 import prisma from "prisma";
 import Deasyncify from "deasyncify";
